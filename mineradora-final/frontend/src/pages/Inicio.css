@@ -1,0 +1,16 @@
+.inicio-container {
+  text-align: center; /* centraliza o conteúdo */
+  margin-top: 40px;
+}
+
+.inicio-titulo {
+  font-size: 2rem;      /* reduz o tamanho do título */
+  font-weight: bold;    /* mantém em negrito */
+  color: #333;          /* cor mais suave */
+  margin-bottom: 20px;  /* espaço abaixo do título */
+}
+
+.inicio-texto {
+  font-size: 1.2rem;    /* tamanho confortável para leitura */
+  color: #555;
+}
