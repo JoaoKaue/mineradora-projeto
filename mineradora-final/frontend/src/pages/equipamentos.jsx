@@ -29,7 +29,29 @@ export default function Equipamentos() {
         } catch (error) { 
             console.error("Erro ao cadastrar", error); 
         } 
-    }; 
+    };
+    
+    const deletar = async (id) => {
+        try {
+            await equipamentoService.deletar(id)
+            carregarEquipamentos()
+        } catch (error) {
+            console.error("Erro ao deletar", error)
+        }
+    };
+
+    const editar = async (id) => {
+    const novoNome = prompt("Novo nome do equipamento:")
+    const novoSetor = prompt("Novo setor:")
+    if (!novoNome || !novoSetor) return
+        try {
+            await equipamentoService.atualizar(id, { nome: novoNome, setor: novoSetor })
+            carregarEquipamentos()
+        } catch (error) {
+           console.error("Erro ao atualizar", error)
+       }
+   };
+
  
     return ( 
         <div> 
@@ -47,7 +69,11 @@ onChange={(e) => setSetor(e.target.value)} style={{ marginRight: '10px' }} />
             <h3>Equipamentos Cadastrados</h3> 
             <ul> 
                 {equipamentos.map(eq => ( 
-                    <li key={eq.id}><strong>{eq.nome}</strong> - Setor: {eq.setor}</li> 
+                    <li key={eq.id}>
+                    <strong>{eq.nome}</strong> - Setor: {eq.setor}
+                    <button onClick={() => deletar(eq.id)} style={{ marginLeft: '10px' }}>Excluir</button>
+                    <button onClick={() => editar(eq.id)} style={{ marginLeft: '5px' }}>Editar</button>
+                    </li> 
                 ))} 
             </ul> 
         </div> 
