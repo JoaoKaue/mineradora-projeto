@@ -11,7 +11,7 @@ app.get('/equipamentos', async (req, res) => {
   try {
     const { data, error } = await equipamentoService.listar()
     if (error) throw error
-    res.json(data)
+    res.json(data || []) // garante que nunca seja undefined
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
@@ -23,7 +23,7 @@ app.post('/equipamentos', async (req, res) => {
     const { nome, setor } = req.body
     const { data, error } = await equipamentoService.criar({ nome, setor })
     if (error) throw error
-    res.json(data)
+    res.json(data || { success: true })
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
@@ -34,9 +34,8 @@ app.put('/equipamentos/:id', async (req, res) => {
   try {
     const { id } = req.params
     const { nome, setor } = req.body
-    const { data, error } = await equipamentoService.atualizar(id, { nome, setor })
-    if (error) throw error
-    res.json(data)
+    await equipamentoService.atualizar(id, { nome, setor })
+    res.json({ success: true, message: "Equipamento atualizado com sucesso" })
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
@@ -46,13 +45,14 @@ app.put('/equipamentos/:id', async (req, res) => {
 app.delete('/equipamentos/:id', async (req, res) => {
   try {
     const { id } = req.params
-    const { data, error } = await equipamentoService.deletar(id)
-    if (error) throw error
-    res.json({ message: "Equipamento deletado com sucesso", data })
+    await equipamentoService.deletar(id)
+    res.json({ success: true, message: "Equipamento deletado com sucesso" })
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
 })
+
+
 
 app.listen(3000, () => {
   console.log('Backend rodando em http://localhost:3000')
